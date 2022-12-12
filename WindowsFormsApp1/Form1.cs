@@ -121,7 +121,7 @@ namespace WindowsFormsApp1
                     thumbnailButton.Image = imageThumbnail;
                     thumbnailButton.Name = im;
                     thumbnailButton.AutoSize = true;
-                    thumbnailButton.Location = new System.Drawing.Point(i,50);
+                    thumbnailButton.Location = new System.Drawing.Point(i,100);
                     thumbnailButton.Size = new Size(130, 130);
                     // When the user clicks on the thumbnail button, open the full-size image in a scrollable PictureBox
                     thumbnailButton.Click += (sr, er) =>
