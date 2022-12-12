@@ -171,6 +171,7 @@ namespace WindowsFormsApp1
                         fullSizeImage.Show();
                     };
                     this.Controls.Add(thumbnailButton);
+                    
                 }
                 catch (Exception ex)
                 {
