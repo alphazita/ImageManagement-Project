@@ -11,11 +11,13 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using Aspose.Slides;
 using Microsoft.SharePoint.Client;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
+using Control = System.Windows.Forms.Control;
 using Image = System.Drawing.Image;
 
 namespace WindowsFormsApp1
@@ -26,14 +28,11 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
         }
-
-
-        
+        List<string> savedImages = new List<string>();
         private void button1_Click(object sender, EventArgs e)
         {
-
             var listImages = Directory.GetFiles(@"C:\\Users\\Anastasiaa\\Desktop\\GenikiTaxidromiki\\", "*.jpg");
-            List<string> savedImages = new List<string>();
+            
             //check if we have empty folder
             if (listImages.Length == 0)
             {
@@ -87,8 +86,33 @@ namespace WindowsFormsApp1
                         //System.Windows.Forms.Application.Exit();
                     }
                 }//);
+                
             }
+            action();
 
+        }
+        //delete all files from folder
+        private void delete_Click_1(object sender, EventArgs e)
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo("C:\\Users\\Anastasiaa\\Desktop\\GenikiTaxidromiki\\");
+            foreach (string im in savedImages) {  
+                if (this.Controls.ContainsKey(im))
+                {
+                    // The container contains the control
+                    this.Controls.RemoveByKey(im);
+                }
+            }
+            this.Controls.RemoveByKey("myPanel");
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+        }
+
+
+        private void action()
+        {
             //if is empty upload the saved images
             if (savedImages.Count == 0)
             {
@@ -101,19 +125,19 @@ namespace WindowsFormsApp1
             //Disable the button if all images are downloaded
             //if (savedImages.Count==6)
             //{
-                buttonstart.Enabled = false;
+            buttonstart.Enabled = false;
             //}
 
             int thumbWidth = 130;
             int thumbHeight = 130;
             int i = 0;
             //Create the thumbnails 
-            foreach (string im  in savedImages)
+            foreach (string im in savedImages)
             //Parallel.ForEach(savedImages, image =>
             {
                 try
                 {
-                    if(savedImages.First() == im)
+                    if (savedImages.First() == im)
                         i = i + 80;
                     else
                         i = i + 140;
@@ -124,11 +148,9 @@ namespace WindowsFormsApp1
                     thumbnailButton.Image = imageThumbnail;
                     thumbnailButton.Name = im;
                     thumbnailButton.AutoSize = true;
-                    thumbnailButton.Location = new System.Drawing.Point(i,120);
+                    thumbnailButton.Location = new System.Drawing.Point(i, 120);
                     thumbnailButton.Size = new Size(130, 130);
-
                     //thumbnailButton.Margin = new Padding(150, 0, 0, 0);
-
                     Panel MyPanel = new Panel();
                     // When the user clicks on the thumbnail button, open the full-size image in a scrollable PictureBox
                     thumbnailButton.Click += (sr, er) =>
@@ -139,6 +161,7 @@ namespace WindowsFormsApp1
                             this.Controls.Remove(MyPanel);
                         }
                         MyPanel.Dock = DockStyle.Fill;
+                        MyPanel.Name = "myPanel";
                         PictureBox fullSizeImage = new PictureBox();
                         fullSizeImage.Image = ima;
                         fullSizeImage.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -146,7 +169,6 @@ namespace WindowsFormsApp1
                         MyPanel.AutoScroll = true;
                         this.Controls.Add(MyPanel);
                         fullSizeImage.Show();
-
                     };
                     this.Controls.Add(thumbnailButton);
                 }
@@ -154,18 +176,6 @@ namespace WindowsFormsApp1
                 {
                     Console.WriteLine(ex.Message);
                 }
-
-            }
-
-        }
-        //delete all files from folder
-        private void delete_Click_1(object sender, EventArgs e)
-        {
-            System.IO.DirectoryInfo di = new DirectoryInfo("C:\\Users\\Anastasiaa\\Desktop\\GenikiTaxidromiki\\");
-
-            foreach (FileInfo file in di.GetFiles())
-            {
-                file.Delete();
             }
         }
     }
