@@ -126,14 +126,18 @@ namespace WindowsFormsApp1
                     thumbnailButton.AutoSize = true;
                     thumbnailButton.Location = new System.Drawing.Point(i,120);
                     thumbnailButton.Size = new Size(130, 130);
-                    
-                    //thumbnailButton.Margin = new Padding(150, 0, 0, 0);
-                    
 
+                    //thumbnailButton.Margin = new Padding(150, 0, 0, 0);
+
+                    Panel MyPanel = new Panel();
                     // When the user clicks on the thumbnail button, open the full-size image in a scrollable PictureBox
                     thumbnailButton.Click += (sr, er) =>
                     {
-                        Panel MyPanel = new Panel();
+                        //Remove previous image
+                        if (MyPanel.Controls.Count != 0)
+                        {
+                            this.Controls.Remove(MyPanel);
+                        }
                         MyPanel.Dock = DockStyle.Fill;
                         PictureBox fullSizeImage = new PictureBox();
                         fullSizeImage.Image = ima;
@@ -142,10 +146,9 @@ namespace WindowsFormsApp1
                         MyPanel.AutoScroll = true;
                         this.Controls.Add(MyPanel);
                         fullSizeImage.Show();
-                        
+
                     };
                     this.Controls.Add(thumbnailButton);
-
                 }
                 catch (Exception ex)
                 {
