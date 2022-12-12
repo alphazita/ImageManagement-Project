@@ -104,8 +104,8 @@ namespace WindowsFormsApp1
                 buttonstart.Enabled = false;
             //}
 
-            int thumbWidth = 200;
-            int thumbHeight = 200;
+            int thumbWidth = 130;
+            int thumbHeight = 130;
             int i = 0;
             //Create the thumbnails 
             foreach (string im  in savedImages)
@@ -113,7 +113,10 @@ namespace WindowsFormsApp1
             {
                 try
                 {
-                    i = i + 50;
+                    if(savedImages.First() == im)
+                        i = i + 80;
+                    else
+                        i = i + 140;
                     Image ima = new Bitmap(im);
                     Image imageThumbnail = ima.GetThumbnailImage(thumbWidth, thumbHeight, null, new IntPtr());
                     //Placeholder ph = new Placeholder();
@@ -121,8 +124,12 @@ namespace WindowsFormsApp1
                     thumbnailButton.Image = imageThumbnail;
                     thumbnailButton.Name = im;
                     thumbnailButton.AutoSize = true;
-                    thumbnailButton.Location = new System.Drawing.Point(i,100);
+                    thumbnailButton.Location = new System.Drawing.Point(i,120);
                     thumbnailButton.Size = new Size(130, 130);
+                    
+                    //thumbnailButton.Margin = new Padding(150, 0, 0, 0);
+                    
+
                     // When the user clicks on the thumbnail button, open the full-size image in a scrollable PictureBox
                     thumbnailButton.Click += (sr, er) =>
                     {
